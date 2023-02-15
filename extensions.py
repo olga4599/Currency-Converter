@@ -23,7 +23,7 @@ class CryptoConverter:
 
         try:
             amount = float(amount)
-        except KeyError:
+        except ValueError:
             raise APIException(f'{amount} amount cannot be calculated')
 
         r = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={quote_ticker}&tsyms={base_ticker}')
