@@ -18,7 +18,7 @@ def values(message: telebot.types.Message):
     bot.reply_to(message, text)
 
 @bot.message_handler(content_types=['text', ])
-def get_price(message: telebot.types.Message):
+def convert(message: telebot.types.Message):
     try:
         values = message.text.split(' ')
 
@@ -26,13 +26,13 @@ def get_price(message: telebot.types.Message):
             raise APIException("Too many parameters")
 
         quote, base, amount = values
-        total_base = CryptoConverter.convert(quote, base, amount)
+        total_base = CryptoConverter.get_price(quote, base, amount)
     except APIException as e:
         bot.reply_to(message, f'User error. \n{e}')
     except Exception as e:
         bot.reply_to(message, f'Command cannot be fulfilled')
     else:
-        text = f'Price {amount} {quote} in {base} - {total_base}'
+        text = f'Price {amount} {quote} = {total_base} {base}'
         bot.send_message(message.chat.id, text)
 
 bot.polling()
